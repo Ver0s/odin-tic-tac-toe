@@ -1,10 +1,8 @@
 const GameBoard = (() => {
     const tiles = document.querySelectorAll('.tile');
-    const board = ['','','','','','','','',''];
+    let board = ['','','','','','','','',''];
 
     const placeMarker = (tile, playerMarker) => {
-        if (tile.hasChildNodes()) return;
-
         const markerElement = document.createElement('p');
         markerElement.textContent = playerMarker;
         markerElement.classList.add('marker');
@@ -17,14 +15,22 @@ const GameBoard = (() => {
 
     const setMarkerInBoard = (tile, playerMarker) => {
         board[getTileIndex(tile)] = playerMarker;
-        console.log(board);
+    }
+
+    const resetBoard = () => {
+        tiles.forEach(tile => {
+            if (tile.hasChildNodes()) {
+                tile.removeChild(tile.firstChild);
+            }
+        })
+        board = ['','','','','','','','',''];
     }
 
     const checkGameStatus = () => {
 
     }
 
-    return { board, placeMarker, tiles, setMarkerInBoard }
+    return { placeMarker, tiles, setMarkerInBoard, resetBoard }
 })();
 
 const Player = (name, marker) => {
@@ -32,20 +38,19 @@ const Player = (name, marker) => {
 }
 
 const Game = (() => {
-    const player1 = Player('Witek', 'X');
-    const player2 = Player('Halyna', 'O');
+    const player1 = Player('Player1', 'X');
+    const player2 = Player('Player2', 'O');
+
+    // set who goes first
     let currentPlayer = player1;
 
-    const setCurrentPlayer = (player) => {
-        return currentPlayer = player;
-    }
-    
     const switchPlayer = () => {
         return currentPlayer = (currentPlayer === player1) ? player2 : player1;
     }
 
     GameBoard.tiles.forEach(tile => {
         tile.addEventListener('click', () => {
+            if (tile.hasChildNodes()) return;
             GameBoard.placeMarker(tile, currentPlayer.marker);
             GameBoard.setMarkerInBoard(tile, currentPlayer.marker);
             switchPlayer();
