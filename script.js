@@ -30,31 +30,46 @@ const GameBoard = (() => {
         return board;
     }
 
-    // it also has to take an argument of a current board status to compare against
-    const checkWin = (marker) => {
-        const winCoords = [
+    // https://bobbyhadz.com/blog/javascript-find-index-all-occurrences-of-element-in-array
+    const getMarkerIndexes = (board, marker) => {
+        const indexes = [];
+        for (let index = 0; index < board.length; index++) {
+            if (board[index] === marker) {
+                indexes.push(index);
+            }
+        }
+        return indexes;
+    }
+
+    const checkWin = (board, marker) => {
+        const winningIndexes = [
             // horizontal win
-            [marker, marker, marker, '', '', '', '', '', ''], 
-            ['', '', '', marker, marker, marker, '', '', ''],
-            ['', '', '', '', '', '', marker, marker, marker],
-    
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+        
             // vertical win
-            [marker, '', '', marker, '', '', marker, '', ''],
-            ['', marker, '', '', marker, '', '', marker, ''],
-            ['', '', marker, '', '', marker, '', '', marker],
-    
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+        
             //cross win
-            [marker, '', '', '', marker, '', '', '', marker],
-            ['', '', marker, '', marker, '', marker, '', '']
+            [0, 4, 8],
+            [2, 4, 6],
         ]
+
+        for (const indexSet of winningIndexes) {
+            // https://stackoverflow.com/questions/38811421/how-to-check-if-an-array-is-a-subset-of-another-array-in-javascript
+            // if (indexSet.every(index => getMarkerIndexes(board, marker).includes(index))) return true
+            if (indexSet.every(index => getMarkerIndexes(board, marker).includes(index))) {console.log('win')};
+        }
     }
 
     const checkGameStatus = () => {
-        // takes result of checkWin - if true display congrats
-        // else continue until draw or win
+        // here i can check game, continue or draw
     }
 
-    return { placeMarker, tiles, setMarkerInBoard, resetBoard, getBoard }
+    return { placeMarker, tiles, setMarkerInBoard, resetBoard, getBoard, checkWin }
 })();
 
 const Player = (name, marker) => {
@@ -81,6 +96,7 @@ const Game = (() => {
             if (tile.hasChildNodes()) return;
             GameBoard.placeMarker(tile, currentPlayer.marker);
             GameBoard.setMarkerInBoard(tile, currentPlayer.marker);
+            GameBoard.checkWin(GameBoard.getBoard(), currentPlayer.marker);
             switchPlayer();
         })
     })
