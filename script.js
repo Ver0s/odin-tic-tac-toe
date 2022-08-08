@@ -26,10 +26,6 @@ const GameBoard = (() => {
         board.fill('');
     }
 
-    const getBoard = () => {
-        return board;
-    }
-
     // https://bobbyhadz.com/blog/javascript-find-index-all-occurrences-of-element-in-array
     const getMarkerIndexes = (board, marker) => {
         const indexes = [];
@@ -78,7 +74,11 @@ const GameBoard = (() => {
         }
     }
 
-    return { placeMarker, tiles, setMarkerInBoard, resetBoard, getBoard, checkGameStatus }
+    const getBoard = () => {
+        return board;
+    }
+
+    return { placeMarker,tiles, setMarkerInBoard, resetBoard, getBoard, checkGameStatus }
 })();
 
 const Player = (name, marker) => {
@@ -88,18 +88,68 @@ const Player = (name, marker) => {
     return { name, marker, getMarker }
 }
 
+const DisplayController = (() => {
+    const gameContainer = document.querySelector('.game-container');
+    const gameSettings = document.querySelector('.game-settings');
+    
+    const displayGame = () => {
+        gameSettings.style.display = 'none';
+        gameContainer.style.display = 'flex';
+    }
+    
+    const displaySettings = () => {
+        gameSettings.style.display = 'flex';
+        gameContainer.style.display = 'none';
+    }
+    
+    const displayResult  = () => {
+        
+    }
+    
+    const displayCurrentPlayer = () => {
+        
+    }
+    
+    const displayPlayersData = () => {
+        
+    }
+
+    return {displayGame, displaySettings}
+})();
+
 const Game = (() => {
-    const player1 = Player('Player1', 'X');
-    const player2 = Player('Player2', 'O');
+    // Get player names
+    let player1Name = null;
+    let player2Name = null;
+    const namePick = document.querySelector('#namePick');
+    namePick.addEventListener('submit', e => {
+        e.preventDefault();
+        DisplayController.displayGame();
+    })
+    player1Name = document.querySelector('#player1Name').value;
+    player2Name = document.querySelector('#player2Name').value;
+    const player1 = Player(player1Name, 'X');
+    const player2 = Player(player2Name, 'O');
     let currentPlayer = player1;
+    
 
     const switchPlayer = () => {
         return currentPlayer = (currentPlayer === player1) ? player2 : player1;
     }
 
+    const getCurrentPlayer = () => {
+        return currentPlayer;
+    }
+    
+    // EVENT LISTENERS
     const resetGameBtn = document.querySelector('#resetGame');
+    const quitGameBtn = document.querySelector('#quitGame');
+    
+    quitGameBtn.addEventListener('click', () => {
+        DisplayController.displaySettings();
+        GameBoard.resetBoard();
+    });
     resetGameBtn.addEventListener('click', GameBoard.resetBoard);
-
     GameBoard.tiles.forEach(tile => {
         tile.addEventListener('click', () => {
             if (tile.hasChildNodes()) return;
@@ -109,7 +159,8 @@ const Game = (() => {
             // switchPlayer();
         })
     })
+
     
-    return { switchPlayer }
+    return { switchPlayer, getCurrentPlayer }
 })();
 
