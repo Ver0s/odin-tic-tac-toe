@@ -60,16 +60,25 @@ const GameBoard = (() => {
 
         for (const indexSet of winningIndexes) {
             // https://stackoverflow.com/questions/38811421/how-to-check-if-an-array-is-a-subset-of-another-array-in-javascript
-            // if (indexSet.every(index => getMarkerIndexes(board, marker).includes(index))) return true
-            if (indexSet.every(index => getMarkerIndexes(board, marker).includes(index))) {console.log('win')};
+            if (indexSet.every(index => getMarkerIndexes(board, marker).includes(index))) return true;
         }
     }
 
-    const checkGameStatus = () => {
-        // here i can check game, continue or draw
+    const checkDraw = (board) => {
+        return board.every(element => element !== '');
     }
 
-    return { placeMarker, tiles, setMarkerInBoard, resetBoard, getBoard, checkWin }
+    const checkGameStatus = (board, marker) => {
+        if (checkWin(board, marker)) {
+            console.log(`${marker} wins`);
+        } else if (checkDraw(board)) {
+            console.log('draw');
+        } else {
+            Game.switchPlayer();
+        }
+    }
+
+    return { placeMarker, tiles, setMarkerInBoard, resetBoard, getBoard, checkGameStatus }
 })();
 
 const Player = (name, marker) => {
@@ -96,11 +105,11 @@ const Game = (() => {
             if (tile.hasChildNodes()) return;
             GameBoard.placeMarker(tile, currentPlayer.marker);
             GameBoard.setMarkerInBoard(tile, currentPlayer.marker);
-            GameBoard.checkWin(GameBoard.getBoard(), currentPlayer.marker);
-            switchPlayer();
+            GameBoard.checkGameStatus(GameBoard.getBoard(), currentPlayer.marker);
+            // switchPlayer();
         })
     })
     
-    return {  }
+    return { switchPlayer }
 })();
 
