@@ -25,7 +25,7 @@ const GameBoard = (() => {
         })
         board.fill('');
     }
-
+    
     // https://bobbyhadz.com/blog/javascript-find-index-all-occurrences-of-element-in-array
     const getMarkerIndexes = (board, marker) => {
         const indexes = [];
@@ -39,7 +39,7 @@ const GameBoard = (() => {
 
     const checkWin = (board, marker) => {
         const winningIndexes = [
-            // horizontal win
+            // horizontal win   
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8],
@@ -82,10 +82,18 @@ const GameBoard = (() => {
 })();
 
 const Player = (name, marker) => {
+    const setName = (newName) => {
+        return name = newName;
+    }
+
+    const getName = () => {
+        return name;
+    }
+
     const getMarker = () => {
         return marker;
     }
-    return { name, marker, getMarker }
+    return { setName, getName, getMarker }
 }
 
 const DisplayController = (() => {
@@ -98,7 +106,7 @@ const DisplayController = (() => {
     }
     
     const displaySettings = () => {
-        gameSettings.style.display = 'flex';
+        gameSettings.style.display = 'block';
         gameContainer.style.display = 'none';
     }
     
@@ -107,60 +115,68 @@ const DisplayController = (() => {
     }
     
     const displayCurrentPlayer = () => {
-        
+    
     }
     
     const displayPlayersData = () => {
-        
+        // create player info instead of selecting it
+        const player1NameDisplay = document.querySelector('#player1NameDisplay');
+        const player2NameDisplay = document.querySelector('#player2NameDisplay');
+        player1NameDisplay.textContent = Game.player1.getName();
+        player2NameDisplay.textContent = Game.player2.getName();
     }
 
-    return {displayGame, displaySettings}
+    return {displayGame, displaySettings, displayPlayersData}
 })();
 
 const Game = (() => {
-    // Get player names
-    let player1Name = null;
-    let player2Name = null;
-    const namePick = document.querySelector('#namePick');
-    namePick.addEventListener('submit', e => {
-        e.preventDefault();
-        DisplayController.displayGame();
-    })
-    player1Name = document.querySelector('#player1Name').value;
-    player2Name = document.querySelector('#player2Name').value;
-    const player1 = Player(player1Name, 'X');
-    const player2 = Player(player2Name, 'O');
+    const player1 = Player('', 'X');
+    const player2 = Player('', 'O');
     let currentPlayer = player1;
-    
 
     const switchPlayer = () => {
         return currentPlayer = (currentPlayer === player1) ? player2 : player1;
     }
-
-    const getCurrentPlayer = () => {
-        return currentPlayer;
-    }
     
+    const setPlayersNames = () => {
+        const player1Name = (document.querySelector('#player1Name').value === '') ? document.querySelector('#player1Name').placeholder : document.querySelector('#player1Name').value;
+        const player2Name = (document.querySelector('#player2Name').value === '') ? document.querySelector('#player2Name').placeholder : document.querySelector('#player2Name').value;
+        player1.setName(player1Name);
+        player2.setName(player2Name);
+    }
+
+    const resetGame = () => {
+        GameBoard.resetBoard();
+        player1.setName('');
+        player2.setName('');
+    }
+
     // EVENT LISTENERS
+    const startGameBtn = document.querySelector('#startGame');
     const resetGameBtn = document.querySelector('#resetGame');
     const quitGameBtn = document.querySelector('#quitGame');
     
+    startGameBtn.addEventListener('click', () => {
+        setPlayersNames();
+        DisplayController.displayGame();
+        DisplayController.displayPlayersData();
+    });
     quitGameBtn.addEventListener('click', () => {
         DisplayController.displaySettings();
-        GameBoard.resetBoard();
+        resetGame();
     });
     resetGameBtn.addEventListener('click', GameBoard.resetBoard);
     GameBoard.tiles.forEach(tile => {
         tile.addEventListener('click', () => {
             if (tile.hasChildNodes()) return;
-            GameBoard.placeMarker(tile, currentPlayer.marker);
-            GameBoard.setMarkerInBoard(tile, currentPlayer.marker);
-            GameBoard.checkGameStatus(GameBoard.getBoard(), currentPlayer.marker);
+            GameBoard.placeMarker(tile, currentPlayer.getMarker());
+            GameBoard.setMarkerInBoard(tile, currentPlayer.getMarker());
+            GameBoard.checkGameStatus(GameBoard.getBoard(), currentPlayer.getMarker());
             // switchPlayer();
         })
     })
 
     
-    return { switchPlayer, getCurrentPlayer }
+    return { switchPlayer, player1, player2 }
 })();
 
