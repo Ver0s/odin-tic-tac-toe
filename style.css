@@ -46,6 +46,10 @@ body {
     gap: 0.5rem;
 }
 
+.current-player-highlight {
+    outline: 2px solid red;
+}
+
 .marker {
     font-size: 3.5rem;
     font-weight: 500;
