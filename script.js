@@ -66,6 +66,7 @@ const GameBoard = (() => {
 
     const checkGameStatus = (board, marker) => {
         if (checkWin(board, marker)) {
+            // return marker;
             console.log(`${marker} wins`);
         } else if (checkDraw(board)) {
             console.log('draw');
@@ -111,22 +112,33 @@ const DisplayController = (() => {
     }
     
     const displayResult  = () => {
-        
+        const resultAnnouncementBox = document.createElement('div');
+        const announcement = document.createElement('p');
+        announcement.text = '';
     }
     
-    const displayCurrentPlayer = () => {
-    
+    const highlightCurrentPlayer = () => {
+        const player1Box = document.querySelector('.player1-box');
+        const player2Box = document.querySelector('.player2-box');
+
+        if (Game.getCurrentPlayer().getMarker() === 'X') {
+            player1Box.classList.add('current-player-highlight');
+            player2Box.classList.remove('current-player-highlight');
+        } else if (Game.getCurrentPlayer().getMarker() === 'O') {
+            player1Box.classList.remove('current-player-highlight');
+            player2Box.classList.add('current-player-highlight');
+        }
     }
     
     const displayPlayersData = () => {
         // create player info instead of selecting it
         const player1NameDisplay = document.querySelector('#player1NameDisplay');
         const player2NameDisplay = document.querySelector('#player2NameDisplay');
-        player1NameDisplay.textContent = Game.player1.getName();
-        player2NameDisplay.textContent = Game.player2.getName();
+        player1NameDisplay.textContent = Game.player1.getName() + ' ' + Game.player1.getMarker();
+        player2NameDisplay.textContent = Game.player2.getName() + ' ' + Game.player2.getMarker();
     }
 
-    return {displayGame, displaySettings, displayPlayersData}
+    return {displayGame, displaySettings, displayPlayersData, highlightCurrentPlayer}
 })();
 
 const Game = (() => {
@@ -146,9 +158,16 @@ const Game = (() => {
     }
 
     const resetGame = () => {
+        DisplayController.displaySettings();
+        currentPlayer = player1;
         GameBoard.resetBoard();
+        DisplayController.highlightCurrentPlayer();
         player1.setName('');
         player2.setName('');
+    }
+
+    const getCurrentPlayer = () => {
+        return currentPlayer;
     }
 
     // EVENT LISTENERS
@@ -157,12 +176,13 @@ const Game = (() => {
     const quitGameBtn = document.querySelector('#quitGame');
     
     startGameBtn.addEventListener('click', () => {
+        // clear inputs to defaults after game start
         setPlayersNames();
         DisplayController.displayGame();
+        DisplayController.highlightCurrentPlayer();
         DisplayController.displayPlayersData();
     });
     quitGameBtn.addEventListener('click', () => {
-        DisplayController.displaySettings();
         resetGame();
     });
     resetGameBtn.addEventListener('click', GameBoard.resetBoard);
@@ -172,11 +192,11 @@ const Game = (() => {
             GameBoard.placeMarker(tile, currentPlayer.getMarker());
             GameBoard.setMarkerInBoard(tile, currentPlayer.getMarker());
             GameBoard.checkGameStatus(GameBoard.getBoard(), currentPlayer.getMarker());
+            DisplayController.highlightCurrentPlayer();
             // switchPlayer();
         })
     })
 
-    
-    return { switchPlayer, player1, player2 }
+    return { switchPlayer, player1, player2, getCurrentPlayer }
 })();
 
