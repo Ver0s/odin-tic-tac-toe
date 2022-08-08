@@ -5,24 +5,50 @@
     box-sizing: border-box;
 }
 
-/* temporary center gameboard - DELETE THIS LATER*/
 body {
-    display: grid;
+    display: flex;
     min-height: 100vh;
+    align-items: center;
+    justify-content: center;
     place-items: center;
     font-family: 'Rubik', sans-serif;
 }
 
-.marker {
-    font-size: 3rem;
-    font-weight: 500;
+/* SETTINGS STYLES */
+
+
+
+/* GAME STYLES */
+.game-container {
+    display: none;
+    /* display: flex; */
+    gap: 1rem;
+    justify-content: center;
+}
+
+.player1-box,
+.player2-box {
+    background-color: aquamarine;
+}
+
+/* GAMEBOARD STYLES */
+.gameboard-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
 .gameboard-container {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(3, 120px);
     gap: 0.5rem;
+}
+
+.marker {
+    font-size: 3.5rem;
+    font-weight: 500;
 }
 
 .tile {
