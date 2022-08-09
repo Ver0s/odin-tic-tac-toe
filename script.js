@@ -117,14 +117,14 @@ const DisplayController = (() => {
         announcement.text = '';
     }
     
-    const highlightCurrentPlayer = () => {
+    const highlightCurrentPlayer = (currentPlayerMarker) => {
         const player1Box = document.querySelector('.player1-box');
         const player2Box = document.querySelector('.player2-box');
 
-        if (Game.getCurrentPlayer().getMarker() === 'X') {
+        if (currentPlayerMarker === 'X') {
             player1Box.classList.add('current-player-highlight');
             player2Box.classList.remove('current-player-highlight');
-        } else if (Game.getCurrentPlayer().getMarker() === 'O') {
+        } else if (currentPlayerMarker === 'O') {
             player1Box.classList.remove('current-player-highlight');
             player2Box.classList.add('current-player-highlight');
         }
@@ -161,7 +161,7 @@ const Game = (() => {
         DisplayController.displaySettings();
         currentPlayer = player1;
         GameBoard.resetBoard();
-        DisplayController.highlightCurrentPlayer();
+        DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
         player1.setName('');
         player2.setName('');
     }
@@ -179,7 +179,7 @@ const Game = (() => {
         // clear inputs to defaults after game start
         setPlayersNames();
         DisplayController.displayGame();
-        DisplayController.highlightCurrentPlayer();
+        DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
         DisplayController.displayPlayersData();
     });
     quitGameBtn.addEventListener('click', () => {
@@ -192,11 +192,10 @@ const Game = (() => {
             GameBoard.placeMarker(tile, currentPlayer.getMarker());
             GameBoard.setMarkerInBoard(tile, currentPlayer.getMarker());
             GameBoard.checkGameStatus(GameBoard.getBoard(), currentPlayer.getMarker());
-            DisplayController.highlightCurrentPlayer();
+            DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
             // switchPlayer();
         })
     })
 
     return { switchPlayer, player1, player2, getCurrentPlayer }
 })();
-
