@@ -21,22 +21,34 @@ body {
 /* GAME STYLES */
 .game-container {
     display: none;
+    position: relative;
     /* display: flex; */
+    flex-direction: column;
     gap: 1rem;
     justify-content: center;
+    padding: 5rem;
+    border-radius: 1rem;
 }
 
-.player1-box,
-.player2-box {
-    background-color: aquamarine;
+.game-container > button {
+    align-self: center;
+}
+
+.player-box {
+    background-color: darkgray;
+    padding: 1rem;
+    text-align: center;
+}
+
+.player-box h2 {
+    margin-bottom: 0.5rem;
 }
 
 /* GAMEBOARD STYLES */
-.gameboard-buttons-container {
+.gameboard-info-container {
     display: flex;
-    flex-direction: column;
+    gap: 1rem;
     align-items: center;
-    gap: 2rem;
 }
 
 .gameboard-container {
@@ -62,4 +74,15 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.announcement-box {
+    /* https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.5rem;
+    background-color: lightcoral;
+    border-radius: 0.5rem;
 }

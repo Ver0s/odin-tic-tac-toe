@@ -19,12 +19,14 @@
         <input type="text" id="player2Name" placeholder="Player2">
         <button id="startGame">Start Game</button>
         <p>Default values will be used if you don't set player names.</p>
+        <p>Player 1 starts.</p>
     </div>
     <div class="game-container">
-        <div class="player1-box">
-            <h2 id="player1NameDisplay"></h2>
-        </div>
-        <div class="gameboard-buttons-container">
+        <div class="gameboard-info-container">
+            <div class="player1-box player-box">
+                <h2 id="player1NameDisplay"></h2>
+                <h3 id="player1MarkerDisplay"></h3>
+            </div>
             <div class="gameboard-container">
                 <div class="tile" data-tile-index="0"></div>
                 <div class="tile" data-tile-index="1"></div>
@@ -36,14 +38,18 @@
                 <div class="tile" data-tile-index="7"></div>
                 <div class="tile" data-tile-index="8"></div>
             </div>
-            <div class="buttons-container">
-                <button id="resetRound">Reset Round</button>
-                <button id="quitGame">Quit Game</button>
+            <div class="player2-box player-box">
+                <h2 id="player2NameDisplay"></h2>
+                <h3 id="player2MarkerDisplay"></h3>
             </div>
+            <!-- <div class="announcement-box">
+                <h3>Player xdd wins</h3>
+                <p>Would you like to continue playing?</p>
+                <button>Continue</button>
+                <button>Quit game</button>
+            </div> -->
         </div>
-        <div class="player2-box">
-            <h2 id="player2NameDisplay"></h2>
-        </div>
+        <button id="mainMenu">Main Menu</button>
     </div>
 </body>
 </html>
