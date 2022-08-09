@@ -172,7 +172,7 @@ const Game = (() => {
 
     // EVENT LISTENERS
     const startGameBtn = document.querySelector('#startGame');
-    const resetGameBtn = document.querySelector('#resetGame');
+    const resetRoundBtn = document.querySelector('#resetRound');
     const quitGameBtn = document.querySelector('#quitGame');
     
     startGameBtn.addEventListener('click', () => {
@@ -185,7 +185,11 @@ const Game = (() => {
     quitGameBtn.addEventListener('click', () => {
         resetGame();
     });
-    resetGameBtn.addEventListener('click', GameBoard.resetBoard);
+    resetRoundBtn.addEventListener('click', () => {
+        currentPlayer = player1;
+        GameBoard.resetBoard();
+        DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
+    });
     GameBoard.tiles.forEach(tile => {
         tile.addEventListener('click', () => {
             if (tile.hasChildNodes()) return;
