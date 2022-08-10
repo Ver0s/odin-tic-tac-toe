@@ -106,8 +106,8 @@ const DisplayController = (() => {
     }
     
     const displayResult = (result, player) => {
-        const h3 = document.querySelector('.announcement-box-modal h3');
-        h3.textContent = (result === 'win') ? `${player} wins` : 'It\'s a draw!';
+        const h2 = document.querySelector('.announcement-box-modal h2');
+        h2.textContent = (result === 'win') ? `${player} wins` : 'It\'s a draw!';
         showResultModal(true);
     }
     
