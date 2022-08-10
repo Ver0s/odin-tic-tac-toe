@@ -90,10 +90,8 @@ body {
 
 .announcement-box {
     /* https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: 2rem auto;
+    width: 20%;
     padding: 1.5rem;
     background-color: lightcoral;
     border-radius: 0.5rem;
