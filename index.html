@@ -13,19 +13,27 @@
 </head>
 <body>
     <div class="game-settings">
-        <label for="player1Name">Player 1 Name</label>
-        <input type="text" id="player1Name" placeholder="Player1">
-        <label for="player2Name">Player 2 Name</label>
-        <input type="text" id="player2Name" placeholder="Player2">
-        <button id="startGame">Start Game</button>
+        <h1>Tic Tac Toe</h1>
+        <div class="name-pick">
+            <div>
+                <label for="player1Name">Player 1 Name</label>
+                <input type="text" id="player1Name" placeholder="Player1">
+            </div>
+            <h2>VS</h2>
+            <div>
+                <label for="player2Name">Player 2 Name</label>
+                <input type="text" id="player2Name" placeholder="Player2">
+            </div>
+        </div>
+        <button id="startGame" class="btn-primary">Start Game</button>
         <p>Default values will be used if you don't set player names.</p>
-        <p>Player 1 starts.</p>
+        <p>Player 1 goes first.</p>
     </div>
     <div class="game-container">
         <div class="gameboard-info-container">
             <div class="player1-box player-box">
                 <h2 id="player1NameDisplay"></h2>
-                <h3 id="player1MarkerDisplay"></h3>
+                <h2 id="player1MarkerDisplay"></h2>
             </div>
             <div class="gameboard-container">
                 <div class="tile" data-tile-index="0"></div>
@@ -40,18 +48,18 @@
             </div>
             <div class="player2-box player-box">
                 <h2 id="player2NameDisplay"></h2>
-                <h3 id="player2MarkerDisplay"></h3>
-            </div>
-            <div class="announcement-box-modal">
-                <div class="announcement-box">
-                    <h3>Player xdd wins</h3>
-                    <p>Would you like to continue playing?</p>
-                    <button id="resetRound">Continue</button>
-                    <button class="mainMenu">Main Menu</button>
-                </div>
+                <h2 id="player2MarkerDisplay"></h2>
             </div>
         </div>
-        <button class="mainMenu">Main Menu</button>
+        <button class="mainMenu btn-primary">Main Menu</button>
+    </div>
+    <div class="announcement-box-modal">
+        <div class="announcement-box">
+            <h2>Player xdd wins</h2>
+            <p>Would you like to continue playing?</p>
+            <button id="resetRound" class="btn-primary">Continue</button>
+            <button class="mainMenu btn-secondary">Main Menu</button>
+        </div>
     </div>
 </body>
 </html>
