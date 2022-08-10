@@ -64,22 +64,11 @@ const GameBoard = (() => {
         return board.every(element => element !== '');
     }
 
-    const checkGameStatus = (board, marker) => {
-        if (checkWin(board, marker)) {
-            // return marker;
-            console.log(`${marker} wins`);
-        } else if (checkDraw(board)) {
-            console.log('draw');
-        } else {
-            Game.switchPlayer();
-        }
-    }
-
     const getBoard = () => {
         return board;
     }
 
-    return { placeMarker,tiles, setMarkerInBoard, resetBoard, getBoard, checkGameStatus }
+    return { placeMarker,tiles, setMarkerInBoard, resetBoard, getBoard, checkDraw, checkWin }
 })();
 
 const Player = (name, marker) => {
@@ -110,11 +99,16 @@ const DisplayController = (() => {
         gameSettings.style.display = 'block';
         gameContainer.style.display = 'none';
     }
+
+    const showResultModal = (show) => {
+        const announcementBoxModal = document.querySelector('.announcement-box-modal');
+        announcementBoxModal.style.display = (show) ? 'block' : 'none';
+    }
     
-    const displayResult  = () => {
-        const resultAnnouncementBox = document.createElement('div');
-        const announcement = document.createElement('p');
-        announcement.text = '';
+    const displayResult = (result, player) => {
+        const h3 = document.querySelector('.announcement-box-modal h3');
+        h3.textContent = (result === 'win') ? `${player} wins` : 'It\'s a draw!';
+        showResultModal(true);
     }
     
     const highlightCurrentPlayer = (currentPlayerMarker) => {
@@ -142,7 +136,7 @@ const DisplayController = (() => {
         player2MarkerDisplay.textContent = `${player2.getMarker()}`;
     }
 
-    return {displayGame, displaySettings, displayPlayersData, highlightCurrentPlayer}
+    return {displayGame, displaySettings, displayPlayersData, highlightCurrentPlayer, displayResult, showResultModal}
 })();
 
 const Game = (() => {
@@ -175,12 +169,14 @@ const Game = (() => {
         DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
         player1.setName('');
         player2.setName('');
+        DisplayController.showResultModal(false);
     }
 
     const resetRound = () => {
         currentPlayer = player1;
         GameBoard.resetBoard();
         DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
+        DisplayController.showResultModal(false);
     }
 
     const getCurrentPlayer = () => {
@@ -189,21 +185,30 @@ const Game = (() => {
 
     // EVENT LISTENERS
     const startGameBtn = document.querySelector('#startGame');
-    // const resetRoundBtn = document.querySelector('#resetRound');
-    const mainMenuBtn = document.querySelector('#mainMenu');
-    
-    startGameBtn.addEventListener('click', startGame);
-    mainMenuBtn.addEventListener('click', mainMenu);
-    // resetRoundBtn.addEventListener('click', resetRound);
+    const resetRoundBtn = document.querySelector('#resetRound');
+    const mainMenuBtns = document.querySelectorAll('.mainMenu');
 
+    startGameBtn.addEventListener('click', startGame);
+    resetRoundBtn.addEventListener('click', resetRound);
+    mainMenuBtns.forEach(btn => {
+        btn.addEventListener('click', mainMenu)
+    })
+
+    // main game loop
     GameBoard.tiles.forEach(tile => {
         tile.addEventListener('click', () => {
             if (tile.hasChildNodes()) return;
             GameBoard.placeMarker(tile, currentPlayer.getMarker());
             GameBoard.setMarkerInBoard(tile, currentPlayer.getMarker());
-            GameBoard.checkGameStatus(GameBoard.getBoard(), currentPlayer.getMarker());
-            DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
-            // switchPlayer();
+            
+            if (GameBoard.checkWin(GameBoard.getBoard(), currentPlayer.getMarker())) {
+                DisplayController.displayResult('win', currentPlayer.getName());
+            } else if (GameBoard.checkDraw(GameBoard.getBoard())) {
+                DisplayController.displayResult('draw', currentPlayer.getName());
+            } else {
+                switchPlayer();
+                DisplayController.highlightCurrentPlayer(currentPlayer.getMarker());
+            }
         })
     })
 
