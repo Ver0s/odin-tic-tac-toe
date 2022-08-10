@@ -155,8 +155,8 @@ const Game = (() => {
     }
     
     const setPlayersNames = () => {
-        const player1Name = (document.querySelector('#player1Name').value === '') ? document.querySelector('#player1Name').placeholder : document.querySelector('#player1Name').value;
-        const player2Name = (document.querySelector('#player2Name').value === '') ? document.querySelector('#player2Name').placeholder : document.querySelector('#player2Name').value;
+        const player1Name = document.querySelector('#player1Name').value || document.querySelector('#player1Name').placeholder;
+        const player2Name = document.querySelector('#player2Name').value || document.querySelector('#player2Name').placeholder;
         player1.setName(player1Name);
         player2.setName(player2Name);
     }
