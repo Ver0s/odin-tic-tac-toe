@@ -136,7 +136,12 @@ const DisplayController = (() => {
         player2MarkerDisplay.textContent = `${player2.getMarker()}`;
     }
 
-    return {displayGame, displaySettings, displayPlayersData, highlightCurrentPlayer, displayResult, showResultModal}
+    const clearPlayerNameInputs = () => {
+        document.querySelector('#player1Name').value = '';
+        document.querySelector('#player2Name').value = '';
+    }
+
+    return {displayGame, displaySettings, displayPlayersData, highlightCurrentPlayer, displayResult, showResultModal, clearPlayerNameInputs}
 })();
 
 const Game = (() => {
@@ -170,6 +175,7 @@ const Game = (() => {
         player1.setName('');
         player2.setName('');
         DisplayController.showResultModal(false);
+        DisplayController.clearPlayerNameInputs();
     }
 
     const resetRound = () => {
