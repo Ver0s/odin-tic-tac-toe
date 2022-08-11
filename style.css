@@ -144,7 +144,7 @@ button {
 }
 
 .current-player-highlight {
-    outline: 2px solid var(--main-white);
+    outline: 4px solid var(--main-white);
 }
 
 .marker {
